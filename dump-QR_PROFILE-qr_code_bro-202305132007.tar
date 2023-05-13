@@ -1,0 +1,223 @@
+-- MySQL dump 10.13  Distrib 5.5.62, for Win64 (AMD64)
+--
+-- Host: localhost    Database: qr_code_bro
+-- ------------------------------------------------------
+-- Server version	5.5.5-10.4.24-MariaDB
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `failed_jobs`
+--
+
+DROP TABLE IF EXISTS `failed_jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `failed_jobs` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `failed_jobs`
+--
+
+LOCK TABLES `failed_jobs` WRITE;
+/*!40000 ALTER TABLE `failed_jobs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `failed_jobs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `migrations`
+--
+
+DROP TABLE IF EXISTS `migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `migrations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `migrations`
+--
+
+LOCK TABLES `migrations` WRITE;
+/*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1);
+/*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `password_resets`
+--
+
+DROP TABLE IF EXISTS `password_resets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `password_resets` (
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  KEY `password_resets_email_index` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `password_resets`
+--
+
+LOCK TABLES `password_resets` WRITE;
+/*!40000 ALTER TABLE `password_resets` DISABLE KEYS */;
+/*!40000 ALTER TABLE `password_resets` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `personal_access_tokens`
+--
+
+DROP TABLE IF EXISTS `personal_access_tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `personal_access_tokens` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_id` bigint(20) unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `personal_access_tokens`
+--
+
+LOCK TABLES `personal_access_tokens` WRITE;
+/*!40000 ALTER TABLE `personal_access_tokens` DISABLE KEYS */;
+INSERT INTO `personal_access_tokens` VALUES (1,'App\\Models\\User',1,'auth_token','9547d333496d8dd0eae1520f837165af5ef79c6e77fb19f0e7b4f6890d71c653','[\"*\"]',NULL,'2023-05-12 19:24:59','2023-05-12 19:24:59'),(2,'App\\Models\\User',1,'auth_token','fea3eb4f28698053f4ffec2a0f81725b297a39fa833d7b8d30a46ded2654746e','[\"*\"]',NULL,'2023-05-12 19:29:15','2023-05-12 19:29:15'),(3,'App\\Models\\User',1,'auth_token','050c2f3a7023c0e54022e4bbb28cbf8cf4dcc0bd8dce3a675c9ebc1562c4fa54','[\"*\"]',NULL,'2023-05-12 19:29:48','2023-05-12 19:29:48'),(4,'App\\Models\\User',1,'auth_token','ae020531743f4e223d1da5c854547c971247f6e2318581c8956a3187d05a8fa5','[\"*\"]',NULL,'2023-05-12 19:30:29','2023-05-12 19:30:29'),(5,'App\\Models\\User',1,'auth_token','49ac108ae7435acb7c0aac33d59803c1df8e7b439465a8557d36ef3e05bfb045','[\"*\"]',NULL,'2023-05-12 19:31:28','2023-05-12 19:31:28'),(6,'App\\Models\\User',1,'auth_token','60ff38783a04d0f528c7e290844d6af3655a587e9f1614c79528b712cd5d83dc','[\"*\"]',NULL,'2023-05-12 19:32:02','2023-05-12 19:32:02'),(7,'App\\Models\\User',1,'auth_token','2f4b5827111f0e8fa1bedbf44c854db4f817a0f1553013df83523c92abbc5dce','[\"*\"]',NULL,'2023-05-12 19:32:08','2023-05-12 19:32:08'),(8,'App\\Models\\User',1,'auth_token','9ac1a1cb174bc06504f295c85670e6f5409486406143e57a8e7c22203250a29b','[\"*\"]',NULL,'2023-05-12 19:32:21','2023-05-12 19:32:21'),(9,'App\\Models\\User',1,'auth_token','ab261ba38878d36484348eddfda8dade46ccb790d4bd61b5266ee5722a79112a','[\"*\"]',NULL,'2023-05-12 19:32:43','2023-05-12 19:32:43'),(10,'App\\Models\\User',1,'auth_token','94fa5c2bf355953bb49a1c5e4af17aef81580772b8aad6b426457ae8bb9008bf','[\"*\"]',NULL,'2023-05-12 19:33:08','2023-05-12 19:33:08'),(11,'App\\Models\\User',1,'auth_token','9c03c7fed15cba04eb96c3ea8d31a073c2b08c47cfbb2b7820c67e5514ee30a6','[\"*\"]',NULL,'2023-05-12 19:34:10','2023-05-12 19:34:10'),(12,'App\\Models\\User',1,'auth_token','bc9607971ddd83651e52327a5965380b3fad8fcb9933a1f1c571add76f178098','[\"*\"]',NULL,'2023-05-12 19:34:45','2023-05-12 19:34:45'),(13,'App\\Models\\User',1,'auth_token','b3689b6e495bcb3ef4aa515844a78d58b2dde219e1c3e3dd043759d19c6a67d1','[\"*\"]',NULL,'2023-05-12 19:39:19','2023-05-12 19:39:19'),(14,'App\\Models\\User',1,'auth_token','d84d5b77572201fa3f7bd6ff0a5851b19248012ae5d35c66e69901806ddd9fbb','[\"*\"]',NULL,'2023-05-12 19:45:16','2023-05-12 19:45:16'),(15,'App\\Models\\User',1,'auth_token','dfb5f9cd9f38c38892e1bca622869b7620f3a2ad1f7c8e4b1a622860751d4ae5','[\"*\"]',NULL,'2023-05-12 19:56:59','2023-05-12 19:56:59'),(16,'App\\Models\\User',1,'auth_token','dd34a05b9e92289538aa4d1255d32fe66b505e8fa142b86a673d6a139fc9a37b','[\"*\"]',NULL,'2023-05-12 20:09:46','2023-05-12 20:09:46'),(17,'App\\Models\\User',1,'auth_token','fcb8f570a2586ab6065832d300e8aa3d5c885ce446c6dac749d6d46cbdb83ce1','[\"*\"]',NULL,'2023-05-12 20:49:36','2023-05-12 20:49:36'),(18,'App\\Models\\User',1,'auth_token','73f9098f49dde1dbd4401fe3ffe513bfa926957deed85bbc0edb58a428da0e20','[\"*\"]',NULL,'2023-05-12 23:56:02','2023-05-12 23:56:02'),(19,'App\\Models\\User',2,'auth_token','fe7b8d9c85ee04f64ddfc7a94d7db96347d0acbf059e66db0a2674a9eab813ed','[\"*\"]',NULL,'2023-05-13 05:44:09','2023-05-13 05:44:09'),(20,'App\\Models\\User',2,'auth_token','821c8a5b959c13f5909739ba1e8473f8254234b2dbfd1c8967d58b8ae81b09b8','[\"*\"]',NULL,'2023-05-13 05:44:18','2023-05-13 05:44:18'),(21,'App\\Models\\User',1,'auth_token','8332e60cf4b6a6e2f1da493151d6bd15dbec24e2b57d380d7a15da19ce96f3b7','[\"*\"]',NULL,'2023-05-13 05:45:15','2023-05-13 05:45:15'),(22,'App\\Models\\User',1,'auth_token','e4b42737393d1ee450bc09e2e00d1dfcc2765876a2f66dcefbd931a63aceacf8','[\"*\"]',NULL,'2023-05-13 05:49:02','2023-05-13 05:49:02'),(23,'App\\Models\\User',1,'auth_token','f4c509f7a831ba143dae4273fa5bfaa5c75f8e90900dbb7263c2df6c270e4c35','[\"*\"]',NULL,'2023-05-13 05:50:32','2023-05-13 05:50:32'),(24,'App\\Models\\User',2,'auth_token','c1f16948c293e3903a2dd4b6d3cc00bd0063c42d37143c9700e955b15707032d','[\"*\"]',NULL,'2023-05-13 05:52:11','2023-05-13 05:52:11'),(25,'App\\Models\\User',1,'auth_token','ff3c8e5b62dee5299ac384c7cef2128de8f053791b8c2b7a17b00ce021976d21','[\"*\"]',NULL,'2023-05-13 05:56:14','2023-05-13 05:56:14'),(26,'App\\Models\\User',1,'auth_token','49134d426e4cff09b4975e0c119027ac11772fc3dc899121acd531315bb1d6fa','[\"*\"]',NULL,'2023-05-13 06:00:04','2023-05-13 06:00:04');
+/*!40000 ALTER TABLE `personal_access_tokens` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `socials_type`
+--
+
+DROP TABLE IF EXISTS `socials_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `socials_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `socials_type`
+--
+
+LOCK TABLES `socials_type` WRITE;
+/*!40000 ALTER TABLE `socials_type` DISABLE KEYS */;
+INSERT INTO `socials_type` VALUES (1,'instagram'),(2,'github'),(3,'snapchat');
+/*!40000 ALTER TABLE `socials_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'Muhammad Rafli','mai@gmail.com',NULL,'$2y$10$x4eUWzHWxkOQCNuANlKdpeK6azTmmlXgG9tuvKz9chh3gIdDGA1ka',NULL,'2023-05-12 19:24:59','2023-05-12 19:24:59'),(2,'REI AYANAMI','reiI@mail.com',NULL,'$2y$10$UksTz1k46B47ilctjjt01OlJlUh6uXrIkjqhh8xCATjduKxHoG..S',NULL,'2023-05-13 05:44:09','2023-05-13 05:44:09');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users_socials`
+--
+
+DROP TABLE IF EXISTS `users_socials`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users_socials` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `link` varchar(100) DEFAULT NULL,
+  `type` varchar(10) DEFAULT NULL COMMENT 'LOOK socials_type',
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users_socials`
+--
+
+LOCK TABLES `users_socials` WRITE;
+/*!40000 ALTER TABLE `users_socials` DISABLE KEYS */;
+INSERT INTO `users_socials` VALUES (13,'asdasdasdasda','OnlyFans',2),(17,'iww.com','SnapChat',1),(18,'asdad.com','Github',1),(19,'myonly.com','OnlyFans',1);
+/*!40000 ALTER TABLE `users_socials` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'qr_code_bro'
+--
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-05-13 20:07:22
