@@ -1,0 +1,3 @@
+@include('template.base')
+
+{{$data}}

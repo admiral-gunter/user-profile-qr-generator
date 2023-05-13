@@ -12,7 +12,7 @@ class SanctumTokenMiddleware
     public function handle(Request $request, Closure $next)
     {
         if(!$request->cookie('authToken')){
-            abort(401, 'Unauthorized');
+            return redirect('/login');
         }
         [$id, $user_token] = explode('|', $request->cookie('authToken'), 2);
         $token_data = DB::table('personal_access_tokens')->where('token', hash('sha256', $user_token))->first();
@@ -20,8 +20,10 @@ class SanctumTokenMiddleware
         if(!$token_data){
             abort(401, 'Unauthorized');
         }
-        // $user_id = $token_data->tokenable_id; 
-        
+        $user_id = $token_data->tokenable_id; 
+        $request->merge([
+            'user_id'=>$user_id
+        ]);
         return $next($request);
     }
 }

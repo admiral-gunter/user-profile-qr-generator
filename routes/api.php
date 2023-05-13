@@ -22,7 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'v1'], function () {
-    Route::post('user-socials/add', [UserSocialsManagementController::class, 'PostMySocials']);
+    Route::middleware('sanctum.token')->group(function () {
+        Route::post('user-socials/add', [UserSocialsManagementController::class, 'PostMySocials']);
+    });
     
     Route::group(['prefix' => 'auth'], function () {
         
