@@ -10,20 +10,20 @@
     </head>
 
 
-      
-    <body>
-        <div id="qrcode"></div>
-    </body>
-    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
     
-    <script>
-        const qrcode = new QRCode(document.getElementById('qrcode'), {
-  text: 'http://localhost:8000/',
-  width: 128,
-  height: 128,
-  colorDark : '#000',
-  colorLight : '#fff',
-  correctLevel : QRCode.CorrectLevel.H
+<body>
+    <div id="qrcode"></div>
+</body>
+<script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+
+<script>
+    const qrcode = new QRCode(document.getElementById('qrcode'), {
+text: 'http://localhost:8000/',
+width: 128,
+height: 128,
+colorDark : '#000',
+colorLight : '#fff',
+correctLevel : QRCode.CorrectLevel.H
 });
     </script>
 

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserSocialsManagementController;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,11 +16,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/login', [AuthController::class, 'Login']);
+
 Route::get('/', function () {
-    return view('welcome');
+    return Redirect::to('/login');
+});
+
+Route::middleware('sanctum.token')->group(function () {
+    Route::get('home', function(){
+        return view('home');
+    });
+});
+// Route::group()
+
+Route::group(['prefix' => 'user-socials'], function () {
+    
+    Route::get('/',[UserSocialsManagementController::class, 'CreateMySocials']);
+
+    Route::post('add', [UserSocialsManagementController::class, 'PostMySocials']);
+    Route::get('qr/{id}', [UserSocialsManagementController::class, 'ViewMySocials']);
+
 });
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
