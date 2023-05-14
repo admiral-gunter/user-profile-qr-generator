@@ -13,7 +13,8 @@ class UserSocialProfileController extends Controller
         $whom_id = $user_id;
         $data = DB::table('users_socials')->where('user_id', $user_id)->get();
         $user_data = DB::table('users')->where('id', $user_id)->select('email', 'name')->first();
+        $user_profile = DB::table('users_profile')->where('user_id', $user_id)->first();
         // dd($user_data);
-        return view('home', compact('data', 'user_id', 'user_data', 'whom_id'));
+        return view('home', compact('data', 'user_id', 'user_data', 'whom_id', 'user_profile'));
     }
 }

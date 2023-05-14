@@ -3,7 +3,7 @@
 
 <div>
     <div style="">
-        <div style="background:rgb(243, 243, 133);width: 100%; height: 100vh; padding:50px; display:flex; justify-content:space-between;">
+        <div  style="background:{{ $user_profile->color ?? 'rgb(243, 243, 133)' }}; width: 100%; height: 100vh; padding:50px; display:flex; justify-content:space-between;">
             <div style="width:40%">
                 <div style="display:flex; justify-content:center">
                     <img src="https://picsum.photos/200" style="width: 150px; height: 150px; object-fit:contain; border-radius:100%"/>
@@ -11,56 +11,112 @@
                 <div style="text-align: center">
                     <h4>{{$user_data->name}}</h4>
                     <h5>{{$user_data->email}}</h5>
+
+                    <button id="editProfileBtn" class="btn btn-secondary">Edit Profile</button>
                 </div>
             </div>
             <div style="width:60%">
                 <ul style="list-style:none">
+                    @if ($user_profile && $user_profile->pronounce)
                     <li>
-                        <p>She/Her</p>
+                        <p>{{$user_profile->pronounce}}</p>
                     </li>
+                    @endif
+                    
+                    @if ($user_profile && $user_profile->nationality)
                     <li>
                         <p style="font-weight: bold; margin:0">Nationality</p>
                         <p>
-                            <span class="fi fi-jp"></span>
+                                <span class="fi fi-{{$user_profile->nationality}}"></span>
                         </p>
                     </li>
-                    <li>
-                        <p style="font-weight: bold; margin:0">Bio</p>
-                        <p style="width: 50%">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, suscipit, atque molestias inventore beatae sunt provident at corrupti nesciunt vero amet sequi perferendis dolor placeat voluptatem consequuntur hic molestiae illo!
-                        </p>
-                    </li>
+                    @endif
+
+                    @if ($user_profile && $user_profile->bio)
+                        <li>
+                            <p style="font-weight: bold; margin:0">Bio</p>
+                            <div style="width: 50%">
+                                {{$user_profile->bio}}
+                            </div>
+                        </li>    
+                    @endif
+
+
+                    @if ($data)
+                        <li>
+                            <div>
+                                <p style="font-weight: bold; margin:0">Social accounts</p>
+                                <ul style="list-style:none; padding:0">
+                                    @foreach ($data as $key=> $item)
+                                        <li>
+                                            <a href="{{$item->link}}" class="link-primary" target="_blank">{{$item->type}}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </li>
+                    @endif
                 </ul>
 
-                <div>
-                    <ul style="list-style:none">
-                        @foreach ($data as $key=> $item)
-                            <li>
-                                <a href="{{$item->link}}" target="_blank">{{$item->type}}</a>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
             </div>
           
         </div>
         @if ($whom_id == $user_id)
+        <div id="editForm">
             <div style="padding:50px">
-                <div id="listSocial">
-                    @foreach ($data as $key=> $item)
-                        <div class="form-group mb-3" style="display: flex; justify-content:between" id="item-social-{{$key+1}}">
-                            <div  style="width:75%">
-                                <input type="text" placeholder="Enter Type.." value="{{$item->type}}" style="outline: none; border:none" id="input-type-{{$key+1}}"/> 
-                                <input  class="form-control" placeholder="Enter Link.." value="{{$item->link}}" id="input-link-{{$key+1}}"/>
-                            </div>
-                            @if ($whom_id == $user_id)
-                            <div class="mt-4" style="margin: auto">
-                                <p style="font-weight: bold; color:white; padding:10px; background:rgb(255, 108, 108); border-radius:5px" onclick="removeThis({{$key+1}})">X</p>
-                            </div>
-                            @endif
+
+
+                <ul style="list-style:none; margin:0">
+                    <li>
+                        <div class="mb-3">
+                            <label class="form-label">Pronounce</label>
+                            <input type="email" id="pronounce" class="form-control" style="width: 50%" value="{{$user_profile->pronounce ?? ''}}" />
                         </div>
-                    @endforeach
-                </div>
+                    </li>
+
+                    <li>
+                        <div class="mb-3">
+                            <label class="form-label">Nationality</label>
+                            <input type="text" id="nationality" placeholder="" class="form-control" style="width: 5%" value="{{$user_profile->nationality ?? ''}}"/>
+                            <div class="form-text">Use initial such as jp for Japan, af for Afghanistan, and so on</div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="mb-3">
+                            <label class="form-label">Bio</label>
+                            <textarea class="form-control" id="bio" placeholder="Describe yourself here" value="{{$user_profile->bio ?? ''}}" ></textarea>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="mb-3">
+                            <label class="form-label">Color</label>
+                            <input type="color" id="color-picker" value="{{$user_profile->color ?? '#F3F385'}}" />
+                            <div class="form-text">This color will be used for your background profile</div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div id="listSocial">
+                            <p style="font-weight: bold; margin:0">Social accounts</p>
+                            @foreach ($data as $key=> $item)
+                                <div class="form-group mb-3" style="display: flex; justify-content:between" id="item-social-{{$key+1}}">
+                                    <div  style="width:75%">
+                                        <input type="text" placeholder="Enter Type.." value="{{$item->type}}" style="outline: none; border:none" id="input-type-{{$key+1}}"/> 
+                                        <input  class="form-control" placeholder="Enter Link.." value="{{$item->link}}" id="input-link-{{$key+1}}"/>
+                                    </div>
+                                    @if ($whom_id == $user_id)
+                                    <div class="mt-4" style="margin: auto">
+                                        <p style="font-weight: bold; color:white; padding:10px; background:rgb(255, 108, 108); border-radius:5px" onclick="removeThis({{$key+1}})">X</p>
+                                    </div>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    </li>
+                </ul>
+
+
         
 
                 @if ($whom_id == $user_id)
@@ -73,6 +129,7 @@
                 <div id="qrcode"></div>
         
             </div>
+        </div>
         @endif
 
     </div>
@@ -122,7 +179,18 @@ function removeThis(param) {
 
 function submit() {
     const itemsValue = []
-    const itemSubmit = {'value':itemsValue}
+    const profile = {}
+    const itemSubmit = {'value':itemsValue, 'profile':profile}
+
+    const pronounce = $('#pronounce').val()
+    const nationality = $('#nationality').val()
+    const bioVal = $('#bio').val()
+    const colorPicker = $('#color-picker').val()
+
+    profile['pronounce'] = pronounce
+    profile['nationality'] = nationality
+    profile['bio'] = bioVal
+    profile['color'] = colorPicker
 
     for (let i = 0; i < totalToLoop; i++) {
         const index = i+1
@@ -143,8 +211,6 @@ function submit() {
             )
         }
     }
-
-    console.log(itemsValue)
 
     var request = new Request('http://localhost:8000/api/v1/user-socials/add', {
         method: 'POST',
@@ -172,6 +238,19 @@ function submit() {
     });
 
 }
+
+
+document.getElementById('editProfileBtn').addEventListener('click', function() {
+  var target = document.getElementById('editForm');
+  if (target) {
+    window.scrollTo({
+      top: target.offsetTop,
+      behavior: 'smooth'
+    });
+  }
+});
+
+
 </script>
 
 <?php

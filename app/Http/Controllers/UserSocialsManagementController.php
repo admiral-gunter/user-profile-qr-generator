@@ -23,6 +23,19 @@ class UserSocialsManagementController extends Controller
         foreach ($bulk_insert as $key => $value) {
             $bulk_insert[$key]['user_id'] = $user_id;
         }
+
+        $profile = $request->profile;
+
+        DB::table('users_profile')->updateOrInsert(
+            ['user_id'=>$user_id],
+            [
+                'bio'=> $profile['bio'],
+                'pronounce'=>$profile['pronounce'],
+                'nationality'=>$profile['nationality'],
+                'color'=>$profile['color']
+            ]
+        );
+
         DB::table('users_socials')->where('user_id', $user_id)->delete();
 
 
@@ -42,8 +55,9 @@ class UserSocialsManagementController extends Controller
         $whom_id = $id;
         $data = DB::table('users_socials')->where('user_id', $id)->get();
         $user_data = DB::table('users')->where('id', $id)->select('email', 'name')->first();
-        // dd($user_data);
-        return view('home', compact('data', 'user_id', 'user_data', 'whom_id'));
-        // return view('user_socials', compact('data'));
+        $user_profile = DB::table('users_profile')->where('user_id', $id)->first();
+        // dd($user_profile);
+
+        return view('home', compact('data', 'user_id', 'user_data', 'whom_id', 'user_profile'));
     }
 }
