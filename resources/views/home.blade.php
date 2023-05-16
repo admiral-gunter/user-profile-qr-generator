@@ -3,38 +3,44 @@
 
 <style>
 @media only screen and (max-width: 600px) {
-/* remove the flex property from the element */
     .profile-container {
         height: 100%;
     }
 }
 
 @media only screen and (min-width: 800px) {
-/* remove the flex property from the element */
     .profile-container {
         display:flex;
         justify-content:space-between;
         height:100vh;
+        padding:50px;
     }
 }
 
 </style>
 
 <div>
-    <div id="containerProfile" class="profile-container" style="background:{{ $user_profile->color ?? 'rgb(243, 243, 133)' }};  padding:50px;">
-        <div style="width:40%">
+    <div id="containerProfile" class="profile-container" style="background:{{ $user_profile->color ?? 'rgb(243, 243, 133)' }};">
+        <div style="width:50%">
             <div style="display:flex; justify-content:center">
                 <img src="https://picsum.photos/200" style="width: 150px; height: 150px; object-fit:contain; border-radius:100%"/>
             </div>
-            <div class="my-5" style="display: flex; justify-content:center">
-                <div>
-                    <i class="fas fa-birthday-cake"></i> 24/11/1990
-                </div>
-            </div>  
-            <div style="text-align: center">
+            
+            <div style="text-align: center; margin-top:10px">
+
                 <h4>{{$user_data->name}}</h4>
                 <h5>{{$user_data->email}}</h5>
-                
+                <div class="">
+                    @if ($user_profile && $user_profile->pronounce)
+                        <p style="text-align: center">{{$user_profile->pronounce}}</p> 
+                    @endif
+                    <div style="display: flex; justify-content:center">
+                        <div>
+                            <i class="fas fa-birthday-cake"></i> 24/11/1990
+                        </div>
+                    </div>  
+    
+                </div>
                 <div style="display: flex; justify-content:center" id="yoursOnly">
                     <ul  style="list-style:none; padding:0; width:200px">
                         <li class="mb-3">
@@ -42,35 +48,46 @@
                                 <i class="fa-solid fa-pencil"></i>
                             </button>
                         </li>
-                        <li class="mb-3">
+                        <li>
                             <button class="btn btn-danger w-100" onclick="deleteAllCookies()">
                                 <i class="fas fa-sign-out-alt"></i>
                         </li>
+
+                        
                     </ul>
                 </div>
+                <div>
+                    <button class="btn btn-info" style="width: 200px" onclick="generateQR()">
+                        <i class="fa-solid fa-qrcode"></i>
+                </div>
+
+                <div style="display: flex; justify-content:center;">
+                    <div id="qrcode" style=" background:white; padding:10px"></div>
+                </div>
+
             </div>
         </div>
-        <div style="width:60%">
+        <div style="width:50%">
             <ul style="list-style:none; margin-top:20px">
-                @if ($user_profile && $user_profile->pronounce)
+                {{-- @if ($user_profile && $user_profile->pronounce)
                 <li>
                     <p>{{$user_profile->pronounce}}</p>
                 </li>
-                @endif
+                @endif --}}
                 
                 @if ($user_profile && $user_profile->nationality)
                 <li>
-                    <p style="font-weight: bold; margin:0">Nationality</p>
-                    <p>
-                            <span class="fi fi-{{$user_profile->nationality}}"></span>
+                    <p style="font-weight: bold; margin:0"  ><span><i class="fa-solid fa-globe fa-2xl"></i></span>  Nationality</p>
+                    <p class="py-2">
+                            <span style="width:30px; height:30px" class="fi fi-{{$user_profile->nationality}}"></span>
                     </p>
                 </li>
                 @endif
 
                 @if ($user_profile && $user_profile->bio)
                     <li>
-                        <p style="font-weight: bold; margin:0">Bio</p>
-                        <div style="width: 50%">
+                        <p style="font-weight: bold; margin:0" class="mb-3"><span><i class="fa-brands fa-black-tie fa-2xl"></i></span> Bio</p>
+                        <div style="width: 80%">
                             {{$user_profile->bio}}
                         </div>
                     </li>    
@@ -80,8 +97,8 @@
                 @if ($data)
                     <li>
                         <div style="margin-top: 50px">
-                            <p style="font-weight: bold; margin:0">Social accounts</p>
-                            <ul style="list-style:none; padding:0">
+                            <p style="font-weight: bold; margin:0" class="mb-3"><i class="fa-solid fa-link fa-2xl"></i> Social accounts</p>
+                            <ul style="list-style:none; padding:0" >
                                 @foreach ($data as $key=> $item)
                                     <li>
                                         <a href="{{$item->link}}" class="link-primary" target="_blank">{{$item->type}}</a>
@@ -163,7 +180,6 @@
             @endif
             <button  class="btn btn-secondary" onclick="generateQR()">generate QR</button>
             
-            <div id="qrcode"></div>
     
         </div>
     </div>
