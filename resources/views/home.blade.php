@@ -59,6 +59,7 @@
                 <div>
                     <button class="btn btn-info" style="width: 200px" onclick="generateQR()">
                         <i class="fa-solid fa-qrcode"></i>
+                    </button>
                 </div>
 
                 <div style="display: flex; justify-content:center;">
@@ -178,7 +179,7 @@
             <button  class="btn btn-success" id="socialsAdd">Add</button>
             <button  class="btn btn-primary" onclick="submit()">Submit</button>
             @endif
-            <button  class="btn btn-secondary" onclick="generateQR()">generate QR</button>
+            {{-- <button  class="btn btn-secondary" onclick="generateQR()">generate QR</button> --}}
             
     
         </div>
@@ -188,7 +189,12 @@
 </div>
 
 <script>
-function generateQR() {
+var qrBtnClicked = false
+function generateQR() {    
+    if(qrBtnClicked){
+        return;
+    }
+
     var user_id = {!! json_encode($user_id) !!};
     const qrcode = new QRCode(document.getElementById('qrcode'), {
     text: 'http://localhost:8000/user-socials/qr/'+user_id,
@@ -198,6 +204,9 @@ function generateQR() {
     colorLight : '#fff',
     correctLevel : QRCode.CorrectLevel.H
     });
+
+    qrBtnClicked = true
+
 }
 
 var totalToLoop = 0
