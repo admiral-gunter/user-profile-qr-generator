@@ -17,11 +17,25 @@
     }
 }
 
+@media only screen and (max-width: 600px) {
+    .sub-profile-container {
+        widh:100%;
+        height:100%;
+    }
+}
+
+@media only screen and (min-width: 800px) {
+    .sub-profile-container {
+        width: 50%;
+        height:100%;
+    }
+}
+
 </style>
 
-<div>
+{{-- <div> --}}
     <div id="containerProfile" class="profile-container" style="background:{{ $user_profile->color ?? 'rgb(243, 243, 133)' }};">
-        <div style="width:50%">
+        <div class="sub-profile-container">
             <div style="display:flex; justify-content:center">
                 @if ($user_profile && $user_profile->picture)
                     <img src="{{ asset('uploads/'.$user_profile->picture)}}" style="width: 150px; height: 150px; object-fit:contain; border-radius:100%"/>
@@ -31,7 +45,6 @@
             </div>
             
             <div style="text-align: center; margin-top:10px">
-
                 <h4>{{$user_data->name}}</h4>
                 <h5>{{$user_data->email}}</h5>
                 <div class="">
@@ -75,13 +88,8 @@
 
             </div>
         </div>
-        <div style="width:50%">
+        <div class="sub-profile-container">
             <ul style="list-style:none; margin-top:20px">
-                {{-- @if ($user_profile && $user_profile->pronounce)
-                <li>
-                    <p>{{$user_profile->pronounce}}</p>
-                </li>
-                @endif --}}
                 
                 @if ($user_profile && $user_profile->nationality)
                 <li>
@@ -125,7 +133,7 @@
         
     </div>
     @if ($whom_id == $user_id)
-    <div id="editForm">
+    <div id="editForm" style="background: white">
         <div style="padding:50px">
 
 
@@ -214,7 +222,7 @@
     </div>
     @endif
 
-</div>
+{{-- </div> --}}
 
 <script>
 var qrBtnClicked = false
@@ -357,6 +365,11 @@ function deleteAllCookies() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
+    var body = document.body;
+    var bg =  {!! json_encode($user_profile->color) !!};
+
+    body.style.backgroundColor = bg;
+
   const element = document.getElementById("containerProfile"); 
   const backgroundColor = window.getComputedStyle(element).backgroundColor;
     const userId = {!! json_encode($user_id) !!};
