@@ -23,7 +23,11 @@
     <div id="containerProfile" class="profile-container" style="background:{{ $user_profile->color ?? 'rgb(243, 243, 133)' }};">
         <div style="width:50%">
             <div style="display:flex; justify-content:center">
-                <img src="https://picsum.photos/200" style="width: 150px; height: 150px; object-fit:contain; border-radius:100%"/>
+                @if ($user_profile && $user_profile->picture)
+                    <img src="{{ asset('uploads/'.$user_profile->picture)}}" style="width: 150px; height: 150px; object-fit:contain; border-radius:100%"/>
+                @else
+                    <img src="https://picsum.photos/200" style="width: 150px; height: 150px; object-fit:contain; border-radius:100%"/>
+                @endif
             </div>
             
             <div style="text-align: center; margin-top:10px">
@@ -34,11 +38,14 @@
                     @if ($user_profile && $user_profile->pronounce)
                         <p style="text-align: center">{{$user_profile->pronounce}}</p> 
                     @endif
-                    <div style="display: flex; justify-content:center">
+
+                    @if ($user_profile && $user_profile->date_birth)
+                    <div style="display: flex; justify-content:center">       
                         <div>
-                            <i class="fas fa-birthday-cake"></i> 24/11/1990
+                            <i class="fas fa-birthday-cake"></i> {{ date('d/m/Y', strtotime($user_profile->date_birth))}}
                         </div>
                     </div>  
+                    @endif
     
                 </div>
                 <div style="display: flex; justify-content:center" id="yoursOnly">
@@ -124,6 +131,24 @@
                     <div class="mb-3">
                         <label class="form-label">Pronounce</label>
                         <input type="email" id="pronounce" class="form-control" style="width: 50%" value="{{$user_profile->pronounce ?? ''}}" />
+                    </div>
+                </li>
+
+                <li>
+                    <div class="mb-3">
+                        <label class="form-label">Picture</label>
+
+                        <form id="uploadForm">
+                            <input type="file" id="fileInput" name="file">
+                          </form>
+                          
+                    </div>
+                </li>
+
+                <li>
+                    <div class="mb-3">
+                        <label class="form-label">Date Birth</label>
+                        <input type="date" id="dateBirth" class="form-control" style="width: 50%" value="{{$user_profile->date_birth ?? ''}}" />
                     </div>
                 </li>
 
@@ -247,11 +272,15 @@ function submit() {
     const nationality = $('#nationality').val()
     const bioVal = $('#bio').val()
     const colorPicker = $('#color-picker').val()
+    const dateBirth = $('#dateBirth').val()
+    const picture = document.getElementById('picture')
 
     profile['pronounce'] = pronounce
     profile['nationality'] = nationality
     profile['bio'] = bioVal
     profile['color'] = colorPicker
+    profile['date_birth'] = dateBirth   
+    profile['picture'] = picture.files[0]
 
     for (let i = 0; i < totalToLoop; i++) {
         const index = i+1
@@ -355,5 +384,33 @@ document.addEventListener("DOMContentLoaded", function() {
     element.style.color = "black";
   }
 });
+
+
+const form = document.getElementById('uploadForm');
+const fileInput = document.getElementById('fileInput');
+
+fileInput.addEventListener('change', function() {
+  const file = fileInput.files[0]; 
+
+  const formData = new FormData();
+
+  formData.append('picture', file);
+
+  fetch('http://localhost:8000/api/v1/user-socials/add', {
+    method: 'POST',
+    body: formData
+  })
+    .then(response => {
+      if (response.ok) {
+        console.log('File uploaded!');
+      } else {
+        console.error('Upload failed.');
+      }
+    })
+    .catch(error => {
+      console.error('Upload failed.', error);
+    });
+});
+
 
 </script>

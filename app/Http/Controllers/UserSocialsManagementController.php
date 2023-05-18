@@ -16,15 +16,35 @@ class UserSocialsManagementController extends Controller
     public function PostMySocials(Request $request)
     {
         $user_id = $request->user_id;
-
         $bulk_insert = $request->value;
+        $fileName = null;
 
+        if ($request->hasFile('picture')) {
+            $file = $request->file('picture');
+            
+            // Generate a unique name for the file using the current timestamp
+            $fileName = 'USER_PICTURE_'.time() . '.' . $file->getClientOriginalExtension();
 
-        foreach ($bulk_insert as $key => $value) {
-            $bulk_insert[$key]['user_id'] = $user_id;
+            $file->move(public_path('uploads'), $fileName);
+
+            DB::table('users_profile')->updateOrInsert(
+                ['user_id'=>$user_id],
+                [
+                    'picture'=>$fileName
+                ]   
+            );
         }
 
+        if($bulk_insert){
+            foreach ($bulk_insert as $key => $value) {
+                $bulk_insert[$key]['user_id'] = $user_id;
+            }
+        }
+
+
         $profile = $request->profile;
+
+        if(!$profile) return;
 
         DB::table('users_profile')->updateOrInsert(
             ['user_id'=>$user_id],
@@ -32,7 +52,8 @@ class UserSocialsManagementController extends Controller
                 'bio'=> $profile['bio'],
                 'pronounce'=>$profile['pronounce'],
                 'nationality'=>$profile['nationality'],
-                'color'=>$profile['color']
+                'color'=>$profile['color'],
+                'date_birth'=>$profile['date_birth'],
             ]
         );
 
