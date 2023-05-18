@@ -94,7 +94,10 @@
 
                 @if ($user_profile && $user_profile->bio)
                     <li>
-                        <p style="font-weight: bold; margin:0" class="mb-3"><span><i class="fa-brands fa-black-tie fa-2xl"></i></span> Bio</p>
+                        <p style="font-weight: bold; margin:0" class="mb-3">
+                            <span><i class="fas fa-signature fa-2xl"></i></span>
+                            Bio
+                        </p>
                         <div style="width: 80%">
                             {{$user_profile->bio}}
                         </div>
