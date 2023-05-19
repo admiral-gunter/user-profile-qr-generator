@@ -134,10 +134,10 @@
     </div>
     @if ($whom_id == $user_id)
     <div id="editForm" style="background: white">
-        <div style="padding:50px">
+        <div style="padding:40px">
 
 
-            <ul style="list-style:none; margin:0">
+            <ul style="list-style:none; margin:0; padding:0">
                 <li>
                     <div class="mb-3">
                         <label class="form-label">Pronounce</label>
