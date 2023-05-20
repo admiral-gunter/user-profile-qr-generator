@@ -17,11 +17,11 @@ class ApiAuthController extends Controller
         $validator = Validator::make($request->all(), [
         'name' => 'required|string|max:255',
         'email' => 'required|string|max:255|unique:users',
-        'password' => 'required|string|min:8'
+        'password' => 'required'
     ]);
 
     if ($validator->fails()) {
-        return response()->json($validator->errors());
+        return response()->json($validator->errors(), 400);
     }
 
     $user = User::create([

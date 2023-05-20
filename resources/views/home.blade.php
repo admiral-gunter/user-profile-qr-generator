@@ -366,39 +366,40 @@ function deleteAllCookies() {
 
 document.addEventListener("DOMContentLoaded", function() {
     var body = document.body;
-    var bg =  {!! json_encode($user_profile->color) !!};
+    var bg =  {!! json_encode($user_profile->color ?? '') !!};
 
-    body.style.backgroundColor = bg;
+    if(bg){
+        body.style.backgroundColor = bg;
+    }
 
-  const element = document.getElementById("containerProfile"); 
-  const backgroundColor = window.getComputedStyle(element).backgroundColor;
+
+    const element = document.getElementById("containerProfile"); 
+    const backgroundColor = window.getComputedStyle(element).backgroundColor;
     const userId = {!! json_encode($user_id) !!};
     const whomId = {!! json_encode($whom_id) !!}
 
-  function isDark(color) {
-    // extract the RGB values
-    const rgb = color.substring(4, color.length-1)
-      .replace(/ /g, '')
-      .split(',');
+    function isDark(color) {
+        const rgb = color.substring(4, color.length-1)
+        .replace(/ /g, '')
+        .split(',');
 
-    // calculate the perceived brightness
-    const brightness = Math.round(((parseInt(rgb[0]) * 299) +
-                    (parseInt(rgb[1]) * 587) +
-                    (parseInt(rgb[2]) * 114)) / 1000);
-    
-    return brightness <= 125;
-  }
+        const brightness = Math.round(((parseInt(rgb[0]) * 299) +
+                        (parseInt(rgb[1]) * 587) +
+                        (parseInt(rgb[2]) * 114)) / 1000);
+        
+        return brightness <= 125;
+    }
 
-  if(userId != whomId){
-    const target = document.getElementById('yoursOnly')
-    target.remove()
-  }
+    if(userId != whomId){
+        const target = document.getElementById('yoursOnly')
+        target.remove()
+    }
 
-  if (isDark(backgroundColor)) {
-    element.style.color = "white";
-  } else {
-    element.style.color = "black";
-  }
+    if (isDark(backgroundColor)) {
+        element.style.color = "white";
+    } else {
+        element.style.color = "black";
+    }
 });
 
 
