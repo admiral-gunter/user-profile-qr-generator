@@ -24,10 +24,10 @@
           <div class="formBx">
             <form action="" onsubmit="return false;">
               <h2>Create an account</h2>
-              <input type="text" name="" placeholder="name" onchange="insertForm(this, 'name')" />
-              <input type="email" name="" placeholder="Email Address"  onchange="insertForm(this, 'email')" />
-              <input type="password" name="" placeholder="Create Password" onchange="insertForm(this, 'password')" />
-              <input type="password" name="" placeholder="Confirm Password" onchange="insertForm(this, 'confirm_pass')" />
+              <input type="text" name="" placeholder="name" onchange="insertForm(this, 'name')" required />
+              <input type="email" name="" placeholder="Email Address"  onchange="insertForm(this, 'email')" required  />
+              <input type="password" name="" placeholder="Create Password" onchange="insertForm(this, 'password')" required />
+              <input type="password" name="" placeholder="Confirm Password" onchange="insertForm(this, 'confirm_pass')" required  />
               <input type="submit" name="" value="Sign Up" onclick="register()" />
               <p class="signup">
                 Already have an account ?
@@ -81,6 +81,8 @@ function register() {
           // Set the cookie with the auth token and expiration date
           document.cookie = `authToken=${authToken}; expires=${expirationDate}; path=/`
       } else {
+        const resp =  response.json() 
+        console.log(resp)
         throw new Error('Network response was not ok.');
       }
     })
@@ -88,6 +90,7 @@ function register() {
       console.log(data);
     })
     .catch(function(error) {
+      console.log(error)
      //  alert('There was a problem with the fetch operation: '+error)
      // Swal.fire({
      //      title: "ERROR!",
