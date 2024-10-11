@@ -120,7 +120,7 @@
                             <ul style="list-style:none; padding:0" >
                                 @foreach ($data as $key=> $item)
                                     <li>
-                                        <a href="{{$item->link}}" class="link-primary" target="_blank">{{$item->type}}</a>
+                                        <a href="{{$item->link}}" style="color:lightcoral;" class="link-primary" target="_blank">{{$item->type}}</a>
                                     </li>
                                 @endforeach
                             </ul>
@@ -150,6 +150,13 @@
                         <label class="form-label">Picture</label>
 
                         <form id="uploadForm">
+
+                             @if ($user_profile && $user_profile->picture)
+                                <img id="imgPreview" src="{{ asset('uploads/'.$user_profile->picture)}}" style="width: 150px; height: 150px; object-fit:contain; border-radius:100%"/>
+                            @else
+                                <img id="imgPreview" src="https://picsum.photos/200" style="width: 150px; height: 150px; object-fit:contain; border-radius:100%"/>
+                            @endif
+
                             <input type="file" id="fileInput" name="file">
                           </form>
                           
@@ -173,9 +180,7 @@
                 <li>
                     <div class="mb-3">
                         <label class="form-label">Bio</label>
-                        <textarea class="form-control" id="bio" placeholder="Describe yourself here" >
-                            {{$user_profile->bio ?? ''}}
-                        </textarea>
+                        <textarea class="form-control" id="bio" placeholder="Describe yourself here" >{{$user_profile->bio ?? ''}}</textarea>
                     </div>
                 </li>
 
@@ -193,8 +198,8 @@
                         @foreach ($data as $key=> $item)
                             <div class="form-group mb-3" style="display: flex; justify-content:between" id="item-social-{{$key+1}}">
                                 <div  style="width:75%">
-                                    <input type="text" placeholder="Enter Type.." value="{{$item->type}}" style="outline: none; border:none" id="input-type-{{$key+1}}"/> 
-                                    <input  class="form-control" placeholder="Enter Link.." value="{{$item->link}}" id="input-link-{{$key+1}}"/>
+                                    <input type="text" class="form-control"  placeholder="Enter Type.." value="{{$item->type}}" id="input-type-{{$key+1}}"/> 
+                                    <input style="margin-top:1%"  class="form-control" placeholder="Enter Link.." value="{{$item->link}}" id="input-link-{{$key+1}}"/>
                                 </div>
                                 @if ($whom_id == $user_id)
                                 <div class="mt-4" style="margin: auto">
@@ -223,9 +228,22 @@
     @endif
 
 {{-- </div> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <script>
 var qrBtnClicked = false
+
+
+function downloadDivAsImage() {
+    const element = document.getElementById('qrcode');
+    html2canvas(element).then(canvas => {
+        const imageURL = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = imageURL;
+        link.download = 'qrcode.png';
+        link.click();
+    });
+}
 function generateQR() {    
     if(qrBtnClicked){
         return;
@@ -243,6 +261,8 @@ function generateQR() {
 
     qrBtnClicked = true
 
+    downloadDivAsImage()
+
 }
 
 var totalToLoop = 0
@@ -255,8 +275,8 @@ $(document).ready(function() {
         totalToLoop = totalToLoop + 1
         var newDiv = $(`<div class="form-group mb-3" style="display: flex; justify-content:between" id="item-social-${totalToLoop}">
                             <div  style="width:75%">
-                                <input type="text" value="" placeholder="Enter Type.." style="outline: none; border:none" id="input-type-${totalToLoop}"/> 
-                                <input  class="form-control" placeholder="Enter Link.." value="" id="input-link-${totalToLoop}"/>
+                                <input type="text"  class="form-control" value="" placeholder="Enter Type.."  id="input-type-${totalToLoop}"/> 
+                                <input  class="form-control" placeholder="Enter Link.." style="margin-top:1%" value="" id="input-link-${totalToLoop}"/>
                             </div>
                             <div class="mt-4" style="margin: auto">
                                 <p style="font-weight: bold; color:white; padding:10px; background:rgb(255, 108, 108); border-radius:5px" onclick="removeThis(${totalToLoop})">X</p>
@@ -291,7 +311,7 @@ function submit() {
     profile['bio'] = bioVal
     profile['color'] = colorPicker
     profile['date_birth'] = dateBirth   
-    profile['picture'] = picture.files[0]
+    // profile['picture'] = picture.files[0]
 
     for (let i = 0; i < totalToLoop; i++) {
         const index = i+1
@@ -321,10 +341,30 @@ function submit() {
         })
     });
 
-  fetch(request)
+    const file = fileInput.files[0]; 
+
+      const formData = new FormData();
+
+      formData.append('picture', file);
+
+
+
+      fetch('http://localhost:8000/api/v1/user-socials/add', {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => {
+          if (response.ok) {
+            console.log('File uploaded!');
+
+              fetch(request)
     .then(function(response) {
       if (response.ok) {
-        Swal.fire('Success').then(()=>{
+        Swal.fire({
+            title: "Success!",
+            text: "The changes have been saved!",
+            icon: "success"
+        }).then(()=>{
             location.reload();
         });
       } else {
@@ -337,6 +377,15 @@ function submit() {
     .catch(function(error) {
       console.error('There was a problem with the fetch operation:', error);
     });
+
+          } else {
+            console.error('Upload failed.');
+          }
+        })
+        .catch(error => {
+          console.error('Upload failed.', error);
+        });
+
 
 }
 
@@ -405,28 +454,21 @@ document.addEventListener("DOMContentLoaded", function() {
 
 const form = document.getElementById('uploadForm');
 const fileInput = document.getElementById('fileInput');
+const imgPreview = document.getElementById('imgPreview');
+
 
 fileInput.addEventListener('change', function() {
-  const file = fileInput.files[0]; 
+    const file = fileInput.files[0]; 
 
-  const formData = new FormData();
+if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      imgPreview.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
 
-  formData.append('picture', file);
-
-  fetch('http://localhost:8000/api/v1/user-socials/add', {
-    method: 'POST',
-    body: formData
-  })
-    .then(response => {
-      if (response.ok) {
-        console.log('File uploaded!');
-      } else {
-        console.error('Upload failed.');
-      }
-    })
-    .catch(error => {
-      console.error('Upload failed.', error);
-    });
+  
 });
 
 

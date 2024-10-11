@@ -67,7 +67,11 @@ function register() {
   fetch(request)
     .then(function(response) {
       if (response.ok) {
-        Swal.fire('Success').then(()=>{
+        Swal.fire({
+          title: "Registered!",
+          text: "Lets create your profile!",
+          icon: "success"
+        }).then(()=>{
           window.location.href = 'http://localhost:8000/login'
         });
 
@@ -84,8 +88,14 @@ function register() {
       console.log(data);
     })
     .catch(function(error) {
-      alert('error')
-      console.error('There was a problem with the fetch operation:', error);
+     //  alert('There was a problem with the fetch operation: '+error)
+     // Swal.fire({
+     //      title: "ERROR!",
+     //      text: "'There was a problem with the fetch operation:'"+ error,
+     //      icon: "error"
+     //    }).then(()=>{
+     //    });
+     //  console.error('There was a problem with the fetch operation:', error);
     });
 }
 
@@ -107,7 +117,11 @@ function login(){
   fetch(request)
     .then(function(response) {
       if (response.ok) {
-        Swal.fire('Success').then(()=>{
+        Swal.fire({
+          title: "Logged in!",
+          text: "Lets see your profile!",
+          icon: "success"
+        }).then(()=>{
           window.location.href = 'http://localhost:8000/home'
         });
         return response.json();
