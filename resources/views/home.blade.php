@@ -356,6 +356,10 @@ function submit() {
         .then(response => {
           if (response.ok) {
             console.log('File uploaded!');
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth'
+            });
 
               fetch(request)
     .then(function(response) {
@@ -365,6 +369,8 @@ function submit() {
             text: "The changes have been saved!",
             icon: "success"
         }).then(()=>{
+            // Scroll to top smoothly
+
             location.reload();
         });
       } else {
