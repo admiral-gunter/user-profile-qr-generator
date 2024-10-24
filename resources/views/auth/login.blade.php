@@ -10,7 +10,7 @@
           <div class="formBx">
             <form action="" onsubmit="return false;">
               <h2>Sign In</h2>
-              <input type="text" name="" placeholder="Email" type="email" onchange="insertLogin(this, 'email')" />
+              <input  name="" placeholder="Email" type="email" onchange="insertLogin(this, 'email')" />
               <input type="password" name="" placeholder="Password"  onchange="insertLogin(this, 'password')"/>
               <input type="submit" name="" value="Login" onclick="login()" />
               <p class="signup">
@@ -66,27 +66,59 @@ function register() {
 
   fetch(request)
     .then(function(response) {
-      if (response.ok) {
-        Swal.fire({
-          title: "Registered!",
-          text: "Lets create your profile!",
-          icon: "success"
-        }).then(()=>{
-          window.location.href = 'http://localhost:8000/login'
-        });
 
-        const oneWeek = 7 * 24 * 60 * 60 * 1000; // in milliseconds
+
+      return response.json().then(function(data) {
+
+      if (data.token_type == "Bearer") {
+          const oneWeek = 7 * 24 * 60 * 60 * 1000; // in milliseconds
         const expirationDate = new Date(Date.now() + oneWeek).toUTCString();
 
-          // Set the cookie with the auth token and expiration date
-          document.cookie = `authToken=${authToken}; expires=${expirationDate}; path=/`
+        // Set the cookie with the auth token and expiration date
+        document.cookie = `authToken=${data.access_token}; expires=${expirationDate}; path=/`;
+        Swal.fire({
+          title: "Registered!",
+          text: "Let's create your profile!",
+          icon: "success"
+        }).then(() => {
+         window.location.href = 'http://localhost:8000/home'
+        });
+
+      
       } else {
-        const resp =  response.json() 
-        console.log(resp)
-        throw new Error('Network response was not ok.');
+        if(data.email){
+             Swal.fire({
+          title: "Error!",
+          text: data.email[0],
+          icon: "error"
+        })
+        }
+
       }
+    });
+
+      // if (response.ok) {
+      //   Swal.fire({
+      //     title: "Registered!",
+      //     text: "Lets create your profile!",
+      //     icon: "success"
+      //   }).then(()=>{
+      //     window.location.href = 'http://localhost:8000/login'
+      //   });
+
+      //   const oneWeek = 7 * 24 * 60 * 60 * 1000; // in milliseconds
+      //   const expirationDate = new Date(Date.now() + oneWeek).toUTCString();
+
+      //     // Set the cookie with the auth token and expiration date
+      //     document.cookie = `authToken=${authToken}; expires=${expirationDate}; path=/`
+      // } else {
+      //   const resp =  response.json() 
+      //   console.log(resp)
+      //   throw new Error('Network response was not ok.');
+      // }
     })
     .then(function(data) {
+      console.log('aasss')
       console.log(data);
     })
     .catch(function(error) {
